@@ -1,11 +1,80 @@
-# windows-kmdf-virtual-device
+## 💾 3️⃣ Windows KMDF Virtual Device Driver
 
-Install Visual Studio Community + Windows Driver Kit (WDK).
+A simple Windows Kernel-Mode Driver (KMDF) that implements a virtual device.
+It demonstrates creating a device object, handling IOCTL read/write operations, and testing via a user-space C program — all without hardware.
 
-Create a KMDF Driver project, paste VirtualDevice.c, set a proper INF, driver signing (test-signed), and build.
+# 🧠 What This Project Demonstrates
 
-Deploy to a test machine or use a VM with test-signing enabled: bcdedit /set testsigning on.
+Windows kernel-mode driver development
 
-Install driver using pnputil or Device Manager (INF) or DevCon.
+KMDF architecture and I/O request handling
 
-Run UserApp to send IOCTLs. Use WinDbg for kernel log
+IOCTL communication between user and kernel
+
+Testing with a user-space application
+
+Building with Visual Studio + WDK
+
+# 🛠️ Requirements
+
+Windows 10/11
+
+Visual Studio (Community Edition)
+
+Windows Driver Kit (WDK)
+
+Test-signing enabled (bcdedit /set testsigning on)
+
+# 🧱 Folder Structure
+```bash
+windows-kmdf-virtual-device/
+├── Driver/
+│   ├── VirtualDevice.c
+│   └── Driver.vcxproj
+├── UserApp/
+│   └── user_ioctl_test.c
+└── README.md
+```
+⚙️ Build Instructions
+```bash
+Open Visual Studio → Create new KMDF Driver project.
+
+Replace source with VirtualDevice.c.
+
+Build with WDK build environment (Release x64).
+
+Enable test signing:
+
+bcdedit /set testsigning on
+
+
+Reboot.
+```
+▶️ Run & Test
+
+Install driver
+```bash
+pnputil /add-driver VirtualDevice.inf /install
+
+
+Run user-space test app
+
+gcc -o user_ioctl_test user_ioctl_test.c
+user_ioctl_test.exe
+
+```
+Expected output
+```bash
+Read 15 bytes: HELLO_FROM_VIRT
+Write success
+```
+
+Debug logs (WinDbg)
+```bash
+VirtDriver: Received USER_SENT_TEST
+```
+
+Uninstall driver
+```bash
+pnputil /delete-driver VirtualDevice.inf /uninstall
+```
