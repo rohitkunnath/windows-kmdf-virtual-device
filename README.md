@@ -1,4 +1,4 @@
-## 💾 3️⃣ Windows KMDF Virtual Device Driver
+## 💾  Windows KMDF Virtual Device Driver
 
 A simple Windows Kernel-Mode Driver (KMDF) that implements a virtual device.
 It demonstrates creating a device object, handling IOCTL read/write operations, and testing via a user-space C program — all without hardware.
